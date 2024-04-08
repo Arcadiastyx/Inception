@@ -9,3 +9,6 @@ This project aims to familiarize you with Docker by creating and manipulating mu
 2. take care of the Server by implementing the NGINX contenair.
 3. take care fo the Worldpress contenair.
 4. take care of the MariaDB contenair. 
+
+## Tips : 
+As you will need to perform installations with sudo, it will not be possible to use the school's machine for correction. You will need a virtual machine that you can launch via VirtualBox, download your desired ISO system (Debian, Ubuntu, etc...), and configure your VM. PLEASE NOTE the memory and disk space required for the ISO installation.
