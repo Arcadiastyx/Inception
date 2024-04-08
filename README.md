@@ -21,6 +21,8 @@ Docker build + "Path to the dockerfile" = Create the contenaire
 
 Docker image ls = Heart files from devian/other
 
+Docker -it run "dockerfile" = it allow to use the docker terminal
+
 ## Files Structure
 ...in progress 
 
