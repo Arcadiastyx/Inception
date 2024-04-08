@@ -18,6 +18,7 @@ As you will need to perform installations with sudo, it will not be possible to 
 
 ## Docker CMD : 
 Docker build + "Path to the dockerfile" = Create the conetenaire
+
 Docker image ls = Heart files from devian/other
 
 ## Files Structure
