@@ -13,5 +13,15 @@ This project aims to familiarize you with Docker by creating and manipulating mu
 6. Manage volums
 7. Clean the code in order to finish the project
 
-## Tips : 
+### Tips : 
 As you will need to perform installations with sudo, it will not be possible to use the school's machine for correction. You will need a virtual machine that you can launch via VirtualBox, download your desired ISO system (Debian, Ubuntu, etc...), and configure your VM. PLEASE NOTE the memory and disk space required for the ISO installation.
+
+## Docker CMD : 
+Docker build + "Path to the dockerfile" = Create the conetenaire
+Docker image ls = Heart files from devian/other
+
+## Files Structure
+...in progress 
+
+
+
