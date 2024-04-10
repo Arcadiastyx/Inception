@@ -2,20 +2,21 @@ FROM    debian:buster
 
 RUN     apt update -y && apt upgrade -y
 
-RUN     apt-get -y install wget
+RUN		apt install wget -y && apt install vim -y
 
 RUN     apt-get install -y php7.3 \
         php-fpm \
 	    php-mysql \
 	    mariadb-client
 
-# installation de worldpress v6
-RUN     wget https://fr.wordpress.org/wordpress-6.0-fr_FR.tar.gz -P /var/www
+COPY ./conf/www.conf /etc/php/7.3/fpm/pool.d/www.conf
 
-# decompression du fichier + suppression du tar.gz
-RUN     cd /var/www && tar -xzf wordpress-6.0-fr_FR.tar.gz && rm wordpress-6.0-fr_FR.tar.gz
+COPY ./tools/conf_wordpress.sh /tmp/conf_wordpress.sh
 
-# droit d ecriture sur le dossier wordpress
-RUN		chown -R root:root /var/www/wordpress
+EXPOSE 9000
 
-CMD ["php-fpm7.3", "-F"]
+RUN mkdir -p /run/php
+
+RUN chmod +x /tmp/conf_wordpress.sh
+
+ENTRYPOINT ["/tmp/conf_wordpress.sh"]
