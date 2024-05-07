@@ -14,10 +14,12 @@ This project aims to familiarize you with Docker by creating and manipulating mu
 ### Tips : 
 - When you build a container it is possible to walk around the container to view the files via your terminal and use shell cmds in order to navigate on the container
 
-## VOLUMES : dans un fichier Docker Compose est utilisée pour :
-# 1.Stockage de données persistantes (bases de données, fichiers de configuration, etc.)
-# 2.Partage de données entre les conteneurs
-# 3.Montage de fichiers ou répertoires de l'hôte
+## VOLUMES : in a Docker Compose file is used to
+``` 
+#1.Persistent data storage (databases, configuration files, etc.)
+#2.Sharing data between containers
+#3.Mounting Host Files or Directories
+``` 
 
 ### COMMANDS ###
 ``` 
