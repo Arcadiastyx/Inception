@@ -9,21 +9,15 @@ This project aims to familiarize you with Docker by creating and manipulating mu
 2. take care of the Server by implementing the NGINX contenair.
 3. take care fo the Worldpress contenair.
 4. take care of the MariaDB contenair.
-5. Link contenairs
-6. Manage volums
-7. Clean the code in order to finish the project
+....
 
 ### Tips : 
 - When you build a container it is possible to walk around the container to view the files via your terminal and use shell cmds in order to navigate on the container
 
 ### COMMANDS ###
 ``` 
-# docker build + "Path to the dockerfile" = Create the contenaire
-
-# docker image ls = Heart files from devian/other
-
-# docker -it run "dockerfile" = it allow to use the docker terminal
-
+# docker build + "Path to the dockerfile"  ---> create the contenaire
+# docker -it run "dockerfile"              ---> allow to use the docker terminal
 # docker-compose up --build                ---> build and run the containers
 # docker-compose up -d                     ---> run the containers in the background
 # docker ps -a                             ---> list all containers
@@ -42,8 +36,6 @@ This project aims to familiarize you with Docker by creating and manipulating mu
 # 2.Partage de données entre les conteneurs
 # 3.Montage de fichiers ou répertoires de l'hôte
 
-## Files Structure
-...in progress 
 
 
 
