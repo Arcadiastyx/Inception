@@ -14,14 +14,33 @@ This project aims to familiarize you with Docker by creating and manipulating mu
 7. Clean the code in order to finish the project
 
 ### Tips : 
-As you will need to perform installations with sudo, it will not be possible to use the school's machine for correction. You will need a virtual machine that you can launch via VirtualBox, download your desired ISO system (Debian, Ubuntu, etc...), and configure your VM. PLEASE NOTE the memory and disk space required for the ISO installation.
+- When you build a container it is possible to walk around the container to view the files via your terminal and use shell cmds in order to navigate on the container
 
-## Docker CMD : 
-Docker build + "Path to the dockerfile" = Create the contenaire
+### COMMANDS ###
+``` 
+# docker build + "Path to the dockerfile" = Create the contenaire
 
-Docker image ls = Heart files from devian/other
+# docker image ls = Heart files from devian/other
 
-Docker -it run "dockerfile" = it allow to use the docker terminal
+# docker -it run "dockerfile" = it allow to use the docker terminal
+
+# docker-compose up --build                ---> build and run the containers
+# docker-compose up -d                     ---> run the containers in the background
+# docker ps -a                             ---> list all containers
+# docker images (-a)                       ---> list all images
+# docker exec -it <nom du contenaire> bash ---> access to the container terminal
+# docker-compose down                      ---> stop and remove all containers
+# docker-compose down -v                   ---> stop and remove all containers and volumes
+# docker-compose down --rmi all            ---> stop and remove all containers and images
+``` 
+
+### INFO ###
+##Quand on build un contenaire il et possible de se balader dans le contenaire pour voir les fichiers via son terminal
+
+## VOLUMES : dans un fichier Docker Compose est utilisée pour :
+# 1.Stockage de données persistantes (bases de données, fichiers de configuration, etc.)
+# 2.Partage de données entre les conteneurs
+# 3.Montage de fichiers ou répertoires de l'hôte
 
 ## Files Structure
 ...in progress 
