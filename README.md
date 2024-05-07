@@ -14,6 +14,11 @@ This project aims to familiarize you with Docker by creating and manipulating mu
 ### Tips : 
 - When you build a container it is possible to walk around the container to view the files via your terminal and use shell cmds in order to navigate on the container
 
+## VOLUMES : dans un fichier Docker Compose est utilisée pour :
+# 1.Stockage de données persistantes (bases de données, fichiers de configuration, etc.)
+# 2.Partage de données entre les conteneurs
+# 3.Montage de fichiers ou répertoires de l'hôte
+
 ### COMMANDS ###
 ``` 
 # docker build + "Path to the dockerfile"  ---> create the contenaire
@@ -28,13 +33,8 @@ This project aims to familiarize you with Docker by creating and manipulating mu
 # docker-compose down --rmi all            ---> stop and remove all containers and images
 ``` 
 
-### INFO ###
-##Quand on build un contenaire il et possible de se balader dans le contenaire pour voir les fichiers via son terminal
 
-## VOLUMES : dans un fichier Docker Compose est utilisée pour :
-# 1.Stockage de données persistantes (bases de données, fichiers de configuration, etc.)
-# 2.Partage de données entre les conteneurs
-# 3.Montage de fichiers ou répertoires de l'hôte
+
 
 
 
