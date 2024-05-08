@@ -1,7 +1,9 @@
 FROM    debian:buster
 
-RUN     apt-get update && apt upgrade -y
-RUN     apt-get install -y nginx openssl
+# installation de nginx et openssl
+RUN     apt-get update && apt-get install -y \
+        nginx \
+        openssl
 
 # dossier pour stocker la clés de certificat pour la connexion sécuriséé = hpps
 # oke vérifié via :docker exec c1(nom du contenaire) ls /etc/nginx/ssl
@@ -14,15 +16,6 @@ RUN openssl req -x509 -nodes \
     -subj "/C=CH/ST=VD/L=Lausanne/O=42/OU=42/CN=login.42lausanne.ch/UID=inaranjo"
 
 COPY ./conf/nginx.conf /etc/nginx/nginx.conf
-
-# dossiier pour stocker les fichiers de config de NGINX 
-#RUN mkdir -p /var/run/nginx
-
-# root principal
-RUN chmod 755 /var/www/html
-
-# utilisateur principal
-RUN chown -R www-data:www-data /var/www/html
 
 EXPOSE 443
 

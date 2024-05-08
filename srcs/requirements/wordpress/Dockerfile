@@ -1,8 +1,6 @@
 FROM    debian:buster
 
-RUN     apt update -y && apt upgrade -y
-
-RUN		apt install wget -y && apt install vim -y
+RUN     apt update -y && apt upgrade -y && install wget -y
 
 RUN     apt-get install -y php7.3 \
         php-fpm \
