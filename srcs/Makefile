@@ -1,5 +1,5 @@
 
-include ./srcs/.env
+include ./srcs /.env
 
 DOCKER_DIR = ./srcs
 DOCKER_COMPOSE = /docker-compose.yaml
