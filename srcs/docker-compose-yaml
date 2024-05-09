@@ -71,6 +71,22 @@ services:
     ports:
       - "443:443"
     restart: always
+
+  volumes:
+    wordpress:
+      name: wordpress
+      driver: local
+      driver_opts:
+        type: 'none'
+       o: 'bind'
+       device: ${VOLUMES_PATH}/wordpress
+     mariadb:
+        name: mariadb
+        driver: local
+        driver_opts:
+          type: 'none'
+           o: 'bind'
+           device: ${VOLUMES_PATH}/mariadb
     
 
 networks:
