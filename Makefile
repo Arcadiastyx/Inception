@@ -1,6 +1,4 @@
-
 # include .env
-
 
 # COMPOSE_FILE := docker-compose.yaml
 
@@ -19,45 +17,38 @@
 
 # .PHONY: up down restart logs
 
-
 include ./srcs/.env
 
-DOCKER_DIR = ./srcs
-DOCKER_COMPOSE = /docker-compose.yaml
+DOCKER_DIR := ./srcs
+DOCKER_COMPOSE := /docker-compose.yaml
+PROJECT_NAME := inception
 
-all: create_volume build
+WORDPRESS_VOLUME := $(VOLUMES_PATH)/wordpress
+MARIADB_VOLUME := $(VOLUMES_PATH)/mariadb
 
-build:
-	docker compose -f ${DOCKER_DIR}${DOCKER_COMPOSE} -p inception up --build
+DOCKER_COMPOSE_CMD := docker compose -f $(DOCKER_DIR)$(DOCKER_COMPOSE) -p $(PROJECT_NAME)
 
-up:
-	docker compose -f ${DOCKER_DIR}${DOCKER_COMPOSE} -p inception up
+.PHONY: all initVolume deleteVolumes build up down stop start down_vol erase purge fclean
 
-down:
-	docker compose -f ${DOCKER_DIR}${DOCKER_COMPOSE} -p inception down
+all: initVolume build start
 
-stop:
-	docker compose -f ${DOCKER_DIR}${DOCKER_COMPOSE} -p inception stop
+initVolume:
+	mkdir -p $(WORDPRESS_VOLUME)
+	mkdir -p $(MARIADB_VOLUME)
 
-start:
-	docker compose -f ${DOCKER_DIR}${DOCKER_COMPOSE} -p inception start
+deleteVolumes:
+	rm -rf $(WORDPRESS_VOLUME)
+	rm -rf $(MARIADB_VOLUME)
 
-down_vol:
-	docker compose -f ${DOCKER_DIR}${DOCKER_COMPOSE} -p inception down -v
+build up down stop start down_vol:
+	$(DOCKER_COMPOSE_CMD) $@
 
 erase:
 	docker stop $$(docker ps -qa); docker rm $$(docker ps -qa); docker rmi -f $$(docker images -qa); docker volume rm $$(docker volume ls -q); docker network rm $$(docker network ls -q) 2>/dev/null
 
-create_volume:
-	mkdir -p $(VOLUMES_PATH)/wordpress
-	mkdir -p $(VOLUMES_PATH)/mariadb
-
-delete_volumes:
-	rm -rf $(VOLUMES_PATH)/wordpress
-	rm -rf $(VOLUMES_PATH)/mariadb
-
 purge:
 	docker system prune -f
 
-fclean: 
-	delete_volumes erase purge
+fclean: deleteVolumes erase purge
+
+start: up
