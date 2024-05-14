@@ -1,12 +1,6 @@
 #!/bin/bash
 
-# # Start MariaDB service
 # service mysql start
-
-# # Wait for MariaDB to be fully up and running
-# while ! mysqladmin ping --silent; do
-#     sleep 1
-# done
 
 # # Set up the database and user
 # if [ -n "$MYSQL_ROOT_PASSWORD" ]; then
@@ -29,12 +23,7 @@
 
 # # Allow any host to connect (for simplicity, restrict to specific IPs for production)
 # mysql -u root -p"${MYSQL_ROOT_PASSWORD}" -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}' WITH GRANT OPTION;"
-# mysql -u root -p"${MYSQL_ROOT_PASSWORD}" -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'wordpress.inception_network' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}' WITH GRANT OPTION;"
 # mysql -u root -p"${MYSQL_ROOT_PASSWORD}" -e "FLUSH PRIVILEGES;"
-
-# # Keep the container running
-# tail -f /dev/null
-
 
 cat << EOF > /tmp/db_config.sql
 CREATE DATABASE IF NOT EXISTS $MYSQL_DATABASE; 
