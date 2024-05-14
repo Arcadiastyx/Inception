@@ -9,10 +9,19 @@ ARG     MYSQL_PASSWORD
 # Install MariaDB
 RUN     apt update -y && apt upgrade -y && apt-get install mariadb-server -y
 
+# # Set up MariaDB configuration
+# # COPY    conf/50-server.cnf	/etc/mysql/mariadb.conf.d/50-server.cnf
+# # COPY    ./tools/script.sh  /bin/script.sh
+# # RUN     chmod +x /bin/script.sh
 
-# Set up MariaDB configuration
-COPY    conf/50-server.cnf	/etc/mysql/mariadb.conf.d/50-server.cnf
-COPY    ./tools/script.sh  /bin/script.sh
-RUN     chmod +x /bin/script.sh
+# ENTRYPOINT [ "/bin/script.sh" ]
 
-ENTRYPOINT [ "script.sh" ]
+COPY conf/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
+
+COPY tools/script.sh /tmp/script.sh
+
+RUN service mysql start && sh /tmp/script.sh
+
+EXPOSE 3306
+
+CMD ["mysqld"]

@@ -1,77 +1,47 @@
-#!/bin/sh
+#!/bin/bash
 
-# $MYSQL_USER           représente le nom de l'utilisateur MySQL.
-# $MYSQL_PASSWORD       est le mot de passe de l'utilisateur MySQL.
-# $MYSQL_ROOT_PASSWORD  est le mot de passe de l'utilisateur root MySQL.
-# $MYSQL_DATABASE       est le nom de la base de données, dans ce contexte probablement utilisée pour une application comme WordPress.
+# # Start MariaDB service
+# service mysql start
 
-service mysql start 
-
-# CREATE USER #
-echo "CREATE USER '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWORD';" | mysql
-
-# PRIVILEGES FOR ROOT AND USER FOR ALL IP ADDRESSES #
-echo "GRANT ALL PRIVILEGES ON *.* TO '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWORD';" | mysql
-echo "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '$MYSQL_ROOT_PASSWORD';" | mysql
-echo "FLUSH PRIVILEGES;" | mysql
-
-# CREATE WORDPRESS DATABASE #
-echo "CREATE DATABASE $MYSQL_DATABASE;" | mysql
-
-kill $(cat /var/run/mysqld/mysqld.pid)
-
-mysqld
-
-#  This script is designed to be used with Docker to set up a MariaDB database.
-
-# # Make sure the MariaDB service is not running before we start our own server
-# # Prevent the MariaDB server from starting automatically on container start
-# echo "Stopping any existing MariaDB services..."
-# service mysql stop
-# systemctl disable mysql
-
-# # Initialize the database directory
-# echo "Initializing MariaDB data directory..."
-# mysql_install_db --user=mysql --ldata=/var/lib/mysql
-
-# # Start the MariaDB server in the background
-# echo "Starting MariaDB server..."
-# mysqld_safe --user=mysql &
-
-# # Wait for MariaDB server to start (max 30 seconds)
-# timeout=30
-# echo "Waiting for MariaDB to start..."
+# # Wait for MariaDB to be fully up and running
 # while ! mysqladmin ping --silent; do
 #     sleep 1
-#     timeout=$((timeout - 1))
-#     if [ $timeout -eq 0 ]; then
-#         echo "MariaDB failed to start."
-#         exit 1
-#     fi
 # done
 
-# # Secure the installation, especially setting the root password
-# echo "Securing MariaDB..."
-# mysql_secure_installation <<EOF
+# # Set up the database and user
+# if [ -n "$MYSQL_ROOT_PASSWORD" ]; then
+#     mysql -e "SET PASSWORD FOR 'root'@'localhost' = PASSWORD('${MYSQL_ROOT_PASSWORD}');"
+#     mysql -e "DELETE FROM mysql.user WHERE User='';"
+#     mysql -e "DROP DATABASE IF EXISTS test;"
+#     mysql -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\_%';"
+#     mysql -e "FLUSH PRIVILEGES;"
+# fi
 
-# y # Set root password
-# $MYSQL_ROOT_PASSWORD
-# $MYSQL_ROOT_PASSWORD
-# y # Remove anonymous users
-# y # Disallow root login remotely
-# y # Remove test database and access to it
-# y # Reload privilege tables now
-# EOF
+# if [ -n "$MYSQL_DATABASE" ]; then
+#     mysql -u root -p"${MYSQL_ROOT_PASSWORD}" -e "CREATE DATABASE IF NOT EXISTS ${MYSQL_DATABASE};"
+# fi
 
-# # Creating the user and database
-# echo "Creating user and database..."
-# mysql -u root -p"$MYSQL_ROOT_PASSWORD" <<-EOSQL
-#     CREATE USER '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWORD';
-#     CREATE DATABASE IF NOT EXISTS $MYSQL_DATABASE;
-#     GRANT ALL PRIVILEGES ON $MYSQL_DATABASE.* TO '$MYSQL_USER'@'%';
-#     FLUSH PRIVILEGES;
-# EOSQL
+# if [ -n "$MYSQL_USER" ] && [ -n "$MYSQL_PASSWORD" ]; then
+#     mysql -u root -p"${MYSQL_ROOT_PASSWORD}" -e "CREATE USER IF NOT EXISTS '${MYSQL_USER}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';"
+#     mysql -u root -p"${MYSQL_ROOT_PASSWORD}" -e "GRANT ALL PRIVILEGES ON ${MYSQL_DATABASE}.* TO '${MYSQL_USER}'@'%';"
+#     mysql -u root -p"${MYSQL_ROOT_PASSWORD}" -e "FLUSH PRIVILEGES;"
+# fi
 
-# echo "MariaDB setup completed."
-# # Keep the mariadb server running in the foreground
-# wait
+# # Allow any host to connect (for simplicity, restrict to specific IPs for production)
+# mysql -u root -p"${MYSQL_ROOT_PASSWORD}" -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}' WITH GRANT OPTION;"
+# mysql -u root -p"${MYSQL_ROOT_PASSWORD}" -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'wordpress.inception_network' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}' WITH GRANT OPTION;"
+# mysql -u root -p"${MYSQL_ROOT_PASSWORD}" -e "FLUSH PRIVILEGES;"
+
+# # Keep the container running
+# tail -f /dev/null
+
+
+cat << EOF > /tmp/db_config.sql
+CREATE DATABASE IF NOT EXISTS $MYSQL_DATABASE; 
+CREATE USER IF NOT EXISTS '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWORD';
+GRANT ALL PRIVILEGES ON $MYSQL_DATABASE.* TO '$MYSQL_USER'@'%';
+ALTER USER 'root'@'localhost' IDENTIFIED BY '$MYSQL_ROOT_PASSWORD';
+FLUSH PRIVILEGES;
+EOF
+
+mysql -h localhost < /tmp/db_config.sql
