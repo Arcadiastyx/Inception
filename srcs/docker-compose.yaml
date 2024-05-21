@@ -1,6 +1,7 @@
 ### COMMANDS ###
 # docker-compose up --build                ---> build and run the containers
 # docker-compose up -d                     ---> run the containers in the background
+# dokcer-compose up 
 # docker ps -a                             ---> list all containers
 # docker images (-a)                       ---> list all images
 # docker exec -it <nom du contenaire> bash ---> access to the container terminal

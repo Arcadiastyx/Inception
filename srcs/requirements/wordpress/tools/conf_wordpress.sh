@@ -4,7 +4,7 @@
 # https://make.wordpress.org/cli/handbook/guides/installing/
 
 # Attendre que la base de données soit prête
-sleep 10
+#sleep 10
 
 # Chemin vers WordPress
 WP_PATH='/var/www/html'

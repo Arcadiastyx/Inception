@@ -92,9 +92,18 @@ deleteVolumes:
 	rm -rf $(MARIADB_VOLUME)
 
 build: 
-	$(DOCKER_COMPOSE_CMD) up --build -d
+	$(DOCKER_COMPOSE_CMD) up --build
 
-up down stop start down_vol:
+start:
+	$(DOCKER_COMPOSE_CMD) start
+
+stop: 
+	$(DOCKER_COMPOSE_CMD) stop
+
+up:
+	$(DOCKER_COMPOSE_CMD) up
+
+down down_vol:
 	$(DOCKER_COMPOSE_CMD) $@
 
 erase:
